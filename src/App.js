@@ -1,19 +1,13 @@
 import React, { PureComponent, Fragment } from 'react';
 import './App.css';
 import  { GraphComponent, AnimatingCircularprogressBar } from "./graph/interpolation.js";
-
-const GraphTypes ={
-  INTERPOLATION: Symbol.for("Interpolation"),
-  ZOOMABLE_GRAPH: Symbol.for("Zoomable"),
-  PIE_CHART: Symbol.for("PieChart"),
-  CIRCULAR_PIE_CHART: Symbol.for("CircularPieChart")
-};
+import GraphTypes from "./graphTypes.js";
 
 const Configs = {
   gridColumn: 2,
   gridEntries: [
     [GraphTypes.INTERPOLATION, GraphTypes.ZOOMABLE_GRAPH],
-    [GraphTypes.INTERPOLATION, GraphTypes.ZOOMABLE_GRAPH],
+    [GraphTypes.GRAPH_AREA, GraphTypes.ZOOMABLE_GRAPH],
     // [GraphTypes.PIE_CHART, GraphTypes.CIRCULAR_PIE_CHART ]
   ],
 
@@ -54,6 +48,28 @@ const Configs = {
       
 
     },
+    [GraphTypes.GRAPH_AREA]:{
+      type: GraphTypes.GRAPH_AREA,
+      header: Symbol.keyFor(GraphTypes.GRAPH_AREA),
+      subHeader: "With Stoke",
+      data:[
+        [
+          { x: 1, y: 2 },
+          { x: 2, y: 3 },
+          { x: 3, y: 5 },
+          { x: 4, y: 4 },
+          { x: 5, y: 7 }
+        ],
+        [
+          { x: 1, y: 3 },
+          { x: 2, y: 2 },
+          { x: 3, y: 6 },
+          { x: 4, y: 2 },
+          { x: 5, y: 6 }
+        ]
+      ],
+      color: ["cyan", "magenta"]
+    }
     // [GraphTypes.PIE_CHART]:{
     //   type: GraphTypes.PIE_CHART
     // },

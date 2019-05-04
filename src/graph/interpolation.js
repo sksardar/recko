@@ -1,6 +1,8 @@
 
 import React , { PureComponent, Fragment } from "react";
-import { VictoryTheme, VictoryChart, VictoryLine, VictoryGroup, VictoryVoronoiContainer, VictoryScatter, VictoryZoomContainer, VictoryTooltip, VictoryAxis, round ,VictoryPie, VictoryAnimation, VictoryLabel} from "victory";
+import { VictoryTheme, VictoryChart, VictoryLine, VictoryGroup, VictoryVoronoiContainer, VictoryArea, VictoryScatter, VictoryZoomContainer, VictoryTooltip, VictoryAxis, round ,VictoryPie, VictoryAnimation, VictoryLabel} from "victory";
+
+import GraphTypes from "../graphTypes.js";
 
 const Graphheader = ({header, subHeader})=>(
   <h4 style={{ position: "absolute", color: "red", margin: "0 auto", background: "black", marginLeft: "40%"}}>
@@ -52,6 +54,29 @@ const GraphYAxis = header =>(
   />
 )
 
+
+const GraphGroup = ( data, color ) =>{
+  return(
+    <VictoryGroup
+      style={{ data : {strokeWidth: 2, fillOpacity: 0.4}}}
+    >
+      {
+        data.map((eachAreaData, i)=>{
+          return(
+            <VictoryArea
+              key={i}
+              style={{
+                data: { fill: color[i], stroke: color[i] }
+              }}
+              data={eachAreaData}
+            />
+          )
+        })
+      }
+    </VictoryGroup>
+  )
+}
+
 export class GraphComponent extends PureComponent{
   constructor() {
     super();
@@ -96,6 +121,7 @@ export class GraphComponent extends PureComponent{
         header,
         subHeader="",
         data,
+        color=[]
       }
      } = this.props;
     return(
@@ -108,10 +134,11 @@ export class GraphComponent extends PureComponent{
               height={200}
               {...this.setZoomableProps()}
             >
-              { GraphLine(data) }
-              { GraphScatter(data) }
-              { GraphXAxis(header) }
-              { GraphYAxis( header) }
+              { GraphTypes.GRAPH_AREA === type && GraphGroup (data, color) }
+              { GraphTypes.GRAPH_AREA !== type && GraphLine(data) }
+              { GraphTypes.GRAPH_AREA !== type && GraphScatter(data) }
+              { GraphTypes.GRAPH_AREA !== type && GraphXAxis(header) }
+              { GraphTypes.GRAPH_AREA !== type && GraphYAxis( header) }
             </VictoryChart>
           </div>
         </div>
