@@ -1,10 +1,10 @@
 import React, { PureComponent, Fragment } from 'react';
 import './App.css';
-import Interpolation, { ZoomableGraph, AnimatingCircularprogressBar } from "./graph/interpolation.js";
+import  { GraphComponent, AnimatingCircularprogressBar } from "./graph/interpolation.js";
 
 const GraphTypes ={
   INTERPOLATION: Symbol.for("Interpolation"),
-  ZOOMABLE_GRAPH: Symbol.for("ZoomableGraph"),
+  ZOOMABLE_GRAPH: Symbol.for("Zoomable"),
   PIE_CHART: Symbol.for("PieChart"),
   CIRCULAR_PIE_CHART: Symbol.for("CircularPieChart")
 };
@@ -12,6 +12,7 @@ const GraphTypes ={
 const Configs = {
   gridColumn: 2,
   gridEntries: [
+    [GraphTypes.INTERPOLATION, GraphTypes.ZOOMABLE_GRAPH],
     [GraphTypes.INTERPOLATION, GraphTypes.ZOOMABLE_GRAPH],
     // [GraphTypes.PIE_CHART, GraphTypes.CIRCULAR_PIE_CHART ]
   ],
@@ -26,7 +27,7 @@ const Configs = {
         { x: 2, y: 1 },
         { x: 3, y: 4 },
         { x: 4, y: 3 },
-        { x: 5, y: 5 }
+        { x: 5, y: 5 },
       ],
 
     },
@@ -35,15 +36,23 @@ const Configs = {
       header: Symbol.keyFor(GraphTypes.ZOOMABLE_GRAPH),
       subHeader:"Scroll mouse on Graph",
       data:[
-        { x: new Date(1982, 1, 1), y: 125 },
+        { x: new Date(1982, 1, 1), y: 155 },
         { x: new Date(1987, 1, 1), y: 257 },
         { x: new Date(1993, 1, 1), y: 345 },
-        { x: new Date(1997, 1, 1), y: 515 },
-        { x: new Date(2001, 1, 1), y: 132 },
+        { x: new Date(1997, 1, 1), y: 450 },
+        { x: new Date(2001, 1, 1), y: 172 },
         { x: new Date(2005, 1, 1), y: 305 },
         { x: new Date(2011, 1, 1), y: 270 },
         { x: new Date(2015, 1, 1), y: 470 }
-      ]
+      ],
+      zoom:{
+        isZoomable: true,
+        scaleAxis: "x",
+        scaleOption: "time"
+
+      }
+      
+
     },
     // [GraphTypes.PIE_CHART]:{
     //   type: GraphTypes.PIE_CHART
@@ -54,11 +63,10 @@ const Configs = {
   }
 }
 
-console.log("Configs===",Configs);
 
 const GraphComnponents = {
-  [GraphTypes.INTERPOLATION]: Interpolation,
-  [GraphTypes.ZOOMABLE_GRAPH]: ZoomableGraph,
+  // [GraphTypes.INTERPOLATION]: Interpolation,
+  // [GraphTypes.ZOOMABLE_GRAPH]: ZoomableGraph,
   [GraphTypes.PIE_CHART]: AnimatingCircularprogressBar,
   [GraphTypes.CIRCULAR_PIE_CHART]: AnimatingCircularprogressBar,
 }
@@ -78,7 +86,7 @@ class Layout extends PureComponent{
                     const Comp = GraphComnponents[graphType];
                     return (
                       <div className="graph-container-row--element" key={index}>
-                        <Comp/>
+                        <GraphComponent config={entities[graphType]}/>
                       </div>)
                   })
               }
@@ -97,12 +105,12 @@ function App() {
       <h1>Layout</h1>
 
       {/* <div style={{display: "flex"}}> */}
-        <div style={{width: "50%",}}>
+        {/* <div style={{width: "50%",}}>
            <Interpolation/>
         </div>
         <div style={{width: "50%"}}>
            <ZoomableGraph/>
-        </div>
+        </div> */}
         <div style={{width: "50%"}}>
            <AnimatingCircularprogressBar/>
         </div>

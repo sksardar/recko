@@ -2,71 +2,57 @@
 import React , { PureComponent, Fragment } from "react";
 import { VictoryTheme, VictoryChart, VictoryLine, VictoryGroup, VictoryVoronoiContainer, VictoryScatter, VictoryZoomContainer, VictoryTooltip, VictoryAxis, round ,VictoryPie, VictoryAnimation, VictoryLabel} from "victory";
 
-const data = [
-  { x: 0, y: 0 },
-  { x: 1, y: 2 },
-  { x: 2, y: 1 },
-  { x: 3, y: 4 },
-  { x: 4, y: 3 },
-  { x: 5, y: 5 }
-];
+const Graphheader = ({header, subHeader})=>(
+  <h4 style={{ position: "absolute", color: "red", margin: "0 auto", background: "black", marginLeft: "40%"}}>
+    { `${header} ${subHeader? "(" + subHeader + ") ":""}`}:
+  </h4>
+)
 
-class Interpolation extends PureComponent{
-  render(){
-    return(
-      <div style={{position:"relative"}}>
-        <h4 style={{ position: "absolute", color: "red", margin: "0 auto", background: "black", marginLeft: "40%"}}>Interpolation:</h4>
-        <div style={{display:"flex"}}>
-          <div style={{width: "100%", display: "inline-block",  background:"black" , borderRadius:4}}>
-            <VictoryChart
-              padding={{ top: 30, right: 40, bottom: 40, left: 50 }}
-              height={250}
-              >
-              <VictoryLine
-                interpolation={"natural"}
-                data={data}
-                style={{ data: { stroke: "#c43a31" } }}
-              />
-              <VictoryScatter data={data}
-                size={4}
-                style={{ data: { fill: "blue" } }}
-              />
-              
-               <VictoryAxis
-                  theme={VictoryTheme.material}
-                  style={{
-                    tickLabels: { fontSize: 10 }
-                  }}
-                  orientation="bottom"
-                  label={`interpolation x-axis`}
-                  style={{
-                    tickLabels: { fontSize: 12 },
-                    axisLabel: { fontSize: 10,  padding: 25, overflow: "visible" }
-                  }}
-                />
-                <VictoryAxis
-                  orientation="left"
-                  theme={VictoryTheme.material}
-                  dependentAxis
-                  label={`interpolation y-axis`}
-                  padding={10}
-                  style={{
-                    tickLabels: { fontSize: 12 },
-                    axisLabel: { fontSize: 10,  padding: 30, overflow: "visible" }
-                  }} 
-                />
-            </VictoryChart>
-            </div>
-            {/* <div style={{width: "20%", display: "inline-block"}}>Description</div> */}
-        </div>
 
-        
-        </div>
-    )
-  }
-}
+const GraphLine = (data)=>(
+  <VictoryLine
+    interpolation={"natural"}
+    data={data}
+    style={{ data: { stroke: "#c43a31" } }}
+  />
+)
+const GraphScatter = (data) =>(
+  <VictoryScatter data={data}
+    size={4}
+    style={{ data: { fill: "blue" } }}
+  />
+)
 
-export class ZoomableGraph extends PureComponent{
+const GraphXAxis = header =>(
+  <VictoryAxis
+    theme={VictoryTheme.material}
+    style={{
+      tickLabels: { fontSize: 10 }
+    }}
+    orientation="bottom"
+    label={`${header} x-axis`}
+    style={{
+      tickLabels: { fontSize: 12 },
+      axisLabel: { fontSize: 10,  padding: 25, overflow: "visible" }
+    }}
+  />
+)
+
+const GraphYAxis = header =>(
+  <VictoryAxis
+    orientation="left"
+    theme={VictoryTheme.material}
+    dependentAxis
+    label={`${header} y-axis`}
+    padding={10}
+    style={{
+      tickLabels: { fontSize: 12 },
+      axisLabel: { fontSize: 10,  padding: 30, overflow: "visible" }
+    }} 
+  />
+)
+
+export class GraphComponent extends PureComponent{
   constructor() {
     super();
     this.state = {
@@ -77,91 +63,62 @@ export class ZoomableGraph extends PureComponent{
     this.setState({ zoomDomain: domain });
   }
 
+  setZoomableProps = ()=>{
+    const {
+      config:{
+        zoom:{
+          isZoomable=false,
+          scaleAxis,
+          scaleOption
+        }={}
+      }
+    } = this.props;
+
+    if(isZoomable){
+      return{
+        scale:{ [scaleAxis] : scaleOption},
+        containerComponent:
+          <VictoryZoomContainer
+            zoomDimension="x"
+            zoomDomain={this.state.zoomDomain}
+            onZoomDomainChange={this.handleZoom.bind(this)}
+            style={{height: "auto"}}
+          />
+      }
+    }
+    return {}
+  }
+
   render(){
+    const {
+      config:{
+        type,
+        header,
+        subHeader="",
+        data,
+      }
+     } = this.props;
     return(
       <div style={{position:"relative"}}>
-        <h4 style={{ position: "absolute", color: "red", margin: "0 auto", background: "black", marginLeft: "40%"}}>Zoomable graph(scroll mouse on graph)</h4>
-     
+        <Graphheader header={header} subHeader={subHeader} />
         <div style={{display:"flex"}}>
-         
-          <div style={{width: "100%", display: "inline-block", background:"black" , borderRadius:4}}>
-            
+          <div style={{width: "100%", display: "inline-block",  background:"black" , borderRadius:4}}>
             <VictoryChart
-             padding={{ top: 30, right: 40, bottom: 40, left: 50 }}
-             height={250}
-             scale={{ x: "time" }}
-              containerComponent={
-                <VictoryZoomContainer
-                  zoomDimension="x"
-                  zoomDomain={this.state.zoomDomain}
-                  onZoomDomainChange={this.handleZoom.bind(this)}
-                  style={{height: "auto"}}
-                />
-              }
+              padding={{ top: 30, right: 40, bottom: 40, left: 50 }}
+              height={200}
+              {...this.setZoomableProps()}
             >
-                <VictoryLine
-                  style={{
-                    data: { stroke: "tomato" }
-                  }}
-                  data={[
-                    { x: new Date(1982, 1, 1), y: 125 },
-                    { x: new Date(1987, 1, 1), y: 257 },
-                    { x: new Date(1993, 1, 1), y: 345 },
-                    { x: new Date(1997, 1, 1), y: 515 },
-                    { x: new Date(2001, 1, 1), y: 132 },
-                    { x: new Date(2005, 1, 1), y: 305 },
-                    { x: new Date(2011, 1, 1), y: 270 },
-                    { x: new Date(2015, 1, 1), y: 470 }
-                  ]}
-                />
-                <VictoryScatter 
-                  data={[
-                    { x: new Date(1982, 1, 1), y: 125 },
-                    { x: new Date(1987, 1, 1), y: 257 },
-                    { x: new Date(1993, 1, 1), y: 345 },
-                    { x: new Date(1997, 1, 1), y: 515 },
-                    { x: new Date(2001, 1, 1), y: 132 },
-                    { x: new Date(2005, 1, 1), y: 305 },
-                    { x: new Date(2011, 1, 1), y: 270 },
-                    { x: new Date(2015, 1, 1), y: 470 }
-                  ]}
-                  size={4}
-                  style={{ data: { fill: "blue" } }}
-                />
-                <VictoryAxis
-                  theme={VictoryTheme.material}
-                  style={{
-                    tickLabels: { fontSize: 10 }
-                  }}
-                  orientation="bottom"
-                  label={"Zoomable x-axis"}
-                  style={{
-                    tickLabels: { fontSize: 12 },
-                    axisLabel: { fontSize: 10,  padding: 25, overflow: "visible" }
-                  }}
-                />
-                <VictoryAxis
-                  orientation="left"
-                  theme={VictoryTheme.material}
-                  dependentAxis
-                  label={"Zoomable y-axis"}
-                  padding={10}
-                  style={{
-                    tickLabels: { fontSize: 12 },
-                    axisLabel: { fontSize: 10,  padding: 30, overflow: "visible" }
-                  }} 
-                />
-              </VictoryChart>
-            </div>
-            {/* <div style={{width: "20%", display: "inline-block"}}>
-              Description
-            </div> */}
+              { GraphLine(data) }
+              { GraphScatter(data) }
+              { GraphXAxis(header) }
+              { GraphYAxis( header) }
+            </VictoryChart>
           </div>
-          </div>
+        </div>
+      </div>
     )
   }
 }
-
 
 export class AnimatingCircularprogressBar extends PureComponent{
   constructor() {
@@ -243,4 +200,4 @@ export class AnimatingCircularprogressBar extends PureComponent{
   }
 }
 
-export default Interpolation;
+// export default Interpolation;
