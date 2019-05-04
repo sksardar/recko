@@ -1,13 +1,13 @@
 import React, { PureComponent, Fragment } from 'react';
 import './App.css';
-import  { GraphComponent, AnimatingCircularprogressBar } from "./graph/interpolation.js";
+import  { GraphComponent } from "./graph/interpolation.js";
 import GraphTypes from "./graphTypes.js";
 
 const Configs = {
   gridColumn: 2,
   gridEntries: [
     [GraphTypes.INTERPOLATION, GraphTypes.ZOOMABLE_GRAPH],
-    [GraphTypes.GRAPH_AREA, GraphTypes.ZOOMABLE_GRAPH],
+    [GraphTypes.GRAPH_AREA, GraphTypes.CIRCULAR_PIE_CHART],
     // [GraphTypes.PIE_CHART, GraphTypes.CIRCULAR_PIE_CHART ]
   ],
 
@@ -69,6 +69,10 @@ const Configs = {
         ]
       ],
       color: ["cyan", "magenta"]
+    },
+    [GraphTypes.CIRCULAR_PIE_CHART]:{
+      type: GraphTypes.CIRCULAR_PIE_CHART,
+      header: Symbol.keyFor(GraphTypes.CIRCULAR_PIE_CHART),
     }
     // [GraphTypes.PIE_CHART]:{
     //   type: GraphTypes.PIE_CHART
@@ -83,8 +87,8 @@ const Configs = {
 const GraphComnponents = {
   // [GraphTypes.INTERPOLATION]: Interpolation,
   // [GraphTypes.ZOOMABLE_GRAPH]: ZoomableGraph,
-  [GraphTypes.PIE_CHART]: AnimatingCircularprogressBar,
-  [GraphTypes.CIRCULAR_PIE_CHART]: AnimatingCircularprogressBar,
+  // [GraphTypes.PIE_CHART]: AnimatingCircularprogressBar,
+  // [GraphTypes.CIRCULAR_PIE_CHART]: AnimatingCircularprogressBar,
 }
 
 class Layout extends PureComponent{
@@ -117,22 +121,7 @@ function App() {
   return (
     <div className="App">
       <Layout/>
-
-      <h1>Layout</h1>
-
-      {/* <div style={{display: "flex"}}> */}
-        {/* <div style={{width: "50%",}}>
-           <Interpolation/>
-        </div>
-        <div style={{width: "50%"}}>
-           <ZoomableGraph/>
-        </div> */}
-        <div style={{width: "50%"}}>
-           <AnimatingCircularprogressBar/>
-        </div>
-
-     
-      </div>
+    </div>
       
   );
 }
