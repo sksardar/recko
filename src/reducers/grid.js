@@ -8,9 +8,9 @@ const GridDefaultValue = {
   ],
 }
 
-function grid(state= GridDefaultValue, action){
-  switch(action.type){
-    default : return state;
+function grid(state = GridDefaultValue, action) {
+  switch (action.type) {
+    default: return state;
   }
 }
 export default grid;
