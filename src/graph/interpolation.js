@@ -1,7 +1,18 @@
 
 import React , { PureComponent, Fragment } from "react";
-import { VictoryTheme, VictoryChart, VictoryLine, VictoryGroup, VictoryVoronoiContainer, VictoryArea, VictoryScatter, VictoryZoomContainer, VictoryTooltip, VictoryAxis, round ,VictoryPie, VictoryAnimation, VictoryLabel} from "victory";
-
+import {
+  VictoryTheme,
+  VictoryChart, 
+  VictoryLine, 
+  VictoryGroup, 
+  VictoryArea, 
+  VictoryScatter, 
+  VictoryZoomContainer, 
+  VictoryAxis, 
+  VictoryPie, 
+  VictoryAnimation, 
+  VictoryLabel
+} from "victory";
 import GraphTypes from "../graphTypes.js";
 
 const Graphheader = ({header, subHeader})=>(
@@ -10,7 +21,6 @@ const Graphheader = ({header, subHeader})=>(
   </h4>
 )
 
-
 const GraphLine = (data)=>(
   <VictoryLine
     interpolation={"natural"}
@@ -18,6 +28,7 @@ const GraphLine = (data)=>(
     style={{ data: { stroke: "#c43a31" } }}
   />
 )
+
 const GraphScatter = (data) =>(
   <VictoryScatter data={data}
     size={4}
@@ -54,7 +65,6 @@ const GraphYAxis = header =>(
   />
 )
 
-
 const GraphGroup = ( data, color ) =>{
   return(
     <VictoryGroup
@@ -76,7 +86,6 @@ const GraphGroup = ( data, color ) =>{
     </VictoryGroup>
   )
 }
-
 
 class AnimatingCircularprogressBar extends React.Component {
   constructor() {

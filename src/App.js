@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import './App.css';
 import  { GraphComponent } from "./graph/interpolation.js";
 import GraphTypes from "./graphTypes.js";
@@ -8,7 +8,6 @@ const Configs = {
   gridEntries: [
     [GraphTypes.INTERPOLATION, GraphTypes.ZOOMABLE_GRAPH],
     [GraphTypes.GRAPH_AREA, GraphTypes.CIRCULAR_PIE_CHART],
-    // [GraphTypes.PIE_CHART, GraphTypes.CIRCULAR_PIE_CHART ]
   ],
 
   entities:{
@@ -23,7 +22,6 @@ const Configs = {
         { x: 4, y: 3 },
         { x: 5, y: 5 },
       ],
-
     },
     [GraphTypes.ZOOMABLE_GRAPH]:{
       type: GraphTypes.ZOOMABLE_GRAPH,
@@ -45,8 +43,6 @@ const Configs = {
         scaleOption: "time"
 
       }
-      
-
     },
     [GraphTypes.GRAPH_AREA]:{
       type: GraphTypes.GRAPH_AREA,
@@ -74,21 +70,7 @@ const Configs = {
       type: GraphTypes.CIRCULAR_PIE_CHART,
       header: Symbol.keyFor(GraphTypes.CIRCULAR_PIE_CHART),
     }
-    // [GraphTypes.PIE_CHART]:{
-    //   type: GraphTypes.PIE_CHART
-    // },
-    // [GraphTypes.CIRCULAR_PIE_CHART]:{
-    //   type: GraphTypes.CIRCULAR_PIE_CHART
-    // }
   }
-}
-
-
-const GraphComnponents = {
-  // [GraphTypes.INTERPOLATION]: Interpolation,
-  // [GraphTypes.ZOOMABLE_GRAPH]: ZoomableGraph,
-  // [GraphTypes.PIE_CHART]: AnimatingCircularprogressBar,
-  // [GraphTypes.CIRCULAR_PIE_CHART]: AnimatingCircularprogressBar,
 }
 
 class Layout extends PureComponent{
@@ -103,7 +85,6 @@ class Layout extends PureComponent{
                 Array.from({length: gridColumn}, (v, i)=> i)
                   .map(index=> {
                     const graphType = rowEntries[index];
-                    const Comp = GraphComnponents[graphType];
                     return (
                       <div className="graph-container-row--element" key={index}>
                         <GraphComponent config={entities[graphType]}/>
